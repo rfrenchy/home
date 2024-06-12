@@ -8,9 +8,12 @@ Vagrant.configure("2") do |config|
   config.vm.box = "debian/bookworm64"
 
   # forward from main to minecraft port
-  # config.vm.network "forwarded_port", guest: 8096, host: 8096
+  # config.vm.network "forwarded_port", guest: 25565, host: 25565
 
-  # install (minecraft)
-  config.vm.provision "shell", inline: "sudo apt-get install --yes jellyfin"
+  # install server dependencies
+  config.vm.provision "shell", inline: "sudo apt-get install --yes openjdk-8-jdk" # java development kit
+  config.vm.provision "shell", inline: "sudo apt-get install --yes default-jre"   # java runtime
+  config.vm.provision "shell", inline: "sudo apt-get install --yes "              # minecraft
+
 
 end

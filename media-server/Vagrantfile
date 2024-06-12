@@ -6,6 +6,7 @@
 
 
 Vagrant.configure("2") do |config|
+
   # start with debian box 
   config.vm.box = "debian/bookworm64"
 
@@ -13,7 +14,6 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 8096, host: 8096
 
   # install media-server (jellyfin)
-  config.vm.provision "shell" do |s|
-    s.inline = "wget https://repo.jellyfin.org/install-debuntu.sh | sudo chmod +777 install-debuntu.sh | sudo /install-debuntu.sh | rm install-debuntu.sh"
-  end
+  config.vm.provision "shell", inline: "sudo apt-get install --yes jellyfin"
+
 end

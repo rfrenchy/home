@@ -3,17 +3,23 @@
 
 
 
-
-
 Vagrant.configure("2") do |config|
 
   # start with debian box 
   config.vm.box = "debian/bookworm64"
 
-  # forward from main to jellyfin on box
+  # setup networking - jellyfin portforwarding 
   config.vm.network "forwarded_port", guest: 8096, host: 8096
 
   # install media-server (jellyfin)
   config.vm.provision "shell", inline: "sudo apt-get install --yes jellyfin"
+
+  # install utilities
+  config.vm.provision "shell", inline: "sudo apt-get install --yes tmux"
+
+  # setup backup 
+  config.vm.provision "shell", inline: "echo 'tar zcf /vagrant/backup/media.tgz ~/' | sudo tee /usr/local/bin/backup-home.sh" 
+  config.vm.provision "shell", inline: "sudo chmod +x /usr/local/bin/backup-home.sh"
+  config.vm.provision "shell", inline: "echo '0 5 * * * /usr/local/bin/backup-home.sh' | crontab -"
 
 end

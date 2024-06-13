@@ -24,13 +24,14 @@ Vagrant.configure("2") do |config|
   # networking - forward minecraft ports
   config.vm.network "forwarded_port", guest: 25565, host: 25565
 
+  config.vm.provision "shell", inline: "apt-get update" 
+
   # utilities
-  # config.vm.provision "shell", inline: "sudo apt-get install --yes tmux" 
+  config.vm.provision "shell", inline: "apt-get install --yes tmux" 
 
-  # install server dependencies
-  config.vm.provision "shell", inline: "sudo apt-get install --yes openjdk-8-jdk" # java development kit
-  config.vm.provision "shell", inline: "sudo apt-get install --yes default-jre"   # java runtime
-
+  # minecraft 
+  config.vm.provision "shell", inline: "sudo apt-get install --yes default-jdk" # java development kit
+  config.vm.provision "shell", inline: "sudo apt-get install --yes default-jre" # java runtime
   config.vm.provision "shell", inline: $minecraft  
 
 end

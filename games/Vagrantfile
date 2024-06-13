@@ -2,18 +2,35 @@
 # vi: set ft=ruby :
 
 
+# **** VM CONTENTS ***** 
+# Modded Minecraft Server
+
+
+$minecraft = <<-'SCRIPT'
+
+  mkdir "/opt/minecraft"
+  cd "/opt/minecraft"
+  cp "/vagrant/forge-1.20.6-50.1.0-installer.jar" "/opt/minecraft/forge-installer.jar"
+
+  java -jar forge-installer.jar --installServer
+
+SCRIPT
+
 Vagrant.configure("2") do |config|
 
   # start with debian box 
   config.vm.box = "debian/bookworm64"
 
-  # forward from main to minecraft port
-  # config.vm.network "forwarded_port", guest: 25565, host: 25565
+  # networking - forward minecraft ports
+  config.vm.network "forwarded_port", guest: 25565, host: 25565
+
+  # utilities
+  # config.vm.provision "shell", inline: "sudo apt-get install --yes tmux" 
 
   # install server dependencies
   config.vm.provision "shell", inline: "sudo apt-get install --yes openjdk-8-jdk" # java development kit
   config.vm.provision "shell", inline: "sudo apt-get install --yes default-jre"   # java runtime
-  config.vm.provision "shell", inline: "sudo apt-get install --yes "              # minecraft
 
+  config.vm.provision "shell", inline: $minecraft  
 
 end

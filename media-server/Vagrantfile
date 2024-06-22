@@ -14,7 +14,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: "sudo apt-get update"
 
   # install media-server (jellyfin)
-  config.vm.provision "shell", inline: "sudo apt-get install --yes jellyfin"
+  config.vm.provision "shell", inline: "sudo apt-get install --yes curl"
+  config.vm.provision "shell", inline: "curl https://repo.jellyfin.org/install-debuntu.sh | sudo bash"
 
   # install utilities
   config.vm.provision "shell", inline: "sudo apt-get install --yes tmux"
